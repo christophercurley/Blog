@@ -81,9 +81,17 @@
             </div>
         </form>
     }
-
     else
     {
         <p>No blog post found!</p>
     }
 </div>
+
+@section Scripts
+    {
+    <script>
+        tinymce.init({
+            selector: 'textarea#content'
+        });
+    </script>
+}
