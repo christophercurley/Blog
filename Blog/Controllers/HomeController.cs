@@ -16,9 +16,11 @@ namespace Blog.Controllers
             this.blogPostRepository = blogPostRepository;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var blogPosts = await blogPostRepository.GetAllAsync();
+
+            return View(blogPosts);
         }
 
         public IActionResult Privacy()
