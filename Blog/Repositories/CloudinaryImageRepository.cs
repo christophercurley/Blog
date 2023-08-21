@@ -11,6 +11,7 @@ namespace Blog.Repositories
         public CloudinaryImageRepository(IConfiguration configuration)
         {
             this.configuration = configuration;
+
             account = new Account(
                 configuration.GetSection("Cloudinary")["CloudName"],
                 configuration.GetSection("Cloudinary")["ApiKey"],

@@ -31,8 +31,14 @@
         </div>
 
         <div class="mb-3">
+            <label class="form-label">Featured Image Upload</label>
+            <input type="file" id="featuredImageUpload" class="form-control" />
+            <img src="" id="featuredImageDisplay" style="display:none;width:300px" class="mt-4" />
+        </div>
+
+        <div class="mb-3">
             <label class="form-label">Featured Image URL</label>
-            <input type="text" class="form-control" id="featuredImageUrl" asp-for="FeaturedImageUrl" />
+            <input type="text" class="form-control" id="featuredImageUrl" asp-for="FeaturedImageUrl" readonly />
         </div>
 
         <div class="mb-3">
@@ -51,8 +57,8 @@
         </div>
 
         <div class="form-check mb-3">
-            <input class="form-check-input" type="checkbox" id="visible" asp-for="Visible" >
-            <label class="form-check-label" >
+            <input class="form-check-input" type="checkbox" id="visible" asp-for="Visible">
+            <label class="form-check-label">
                 Is Visible?
             </label>
         </div>
@@ -67,11 +73,43 @@
     </form>
 </div>
 
-@section Scripts 
-{
+@section Scripts
+    {
     <script>
         tinymce.init({
             selector: 'textarea#content'
         });
+
+        const featuredUploadElement = document.getElementById("featuredImageUpload");
+        const featuredUploadUrlElement = document.getElementById("featuredImageUrl");
+        const featuredImageDisplayElement = document.getElementById("featuredImageDisplay");
+
+        // set date to current day
+        const dateControl = document.getElementById('publishedDate');
+        const today = new Date().toISOString().split('T')[0];
+        dateControl.value = today;
+
+        async function uploadFeaturedImage(e) {
+            console.log(e.target.files[0]);
+
+            let data = new FormData();
+            data.append("file", e.target.files[0]);
+
+            await fetch("/api/images", {
+                method: "POST",
+                headers: {
+                    "Accept": "*/*",
+                },
+                body: data,
+            }).then(response => response.json())
+                .then(result => {
+                    featuredUploadUrlElement.value = result.link;
+                    featuredImageDisplayElement.src = result.link;
+                    featuredImageDisplayElement.style.display = "block";
+                });
+        }
+
+        featuredUploadElement.addEventListener("change", uploadFeaturedImage);
+
     </script>
 }
