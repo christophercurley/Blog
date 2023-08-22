@@ -1,4 +1,4 @@
-﻿@model List<Blog.Models.Domain.BlogPost>
+﻿@model Blog.Models.ViewModels.HomeViewModel
 
 @{
     ViewData["Title"] = "Home Page";
@@ -10,7 +10,7 @@
             <h1 class="display-5 fw-bold lh-1 mb-3">Dev Blog</h1>
             <p class="lead">
                 This is a blog dedicated to covering a large swathe of web development technologies.
-                Want to read the latest dev articles? Sign up and get monthly articles delivered straight to your inbox.
+                Want to read the latest dev articles? Sign up and get them delivered straight to your inbox every month.
             </p>
         </div>
 
@@ -23,12 +23,32 @@
     </div>
 </div>
 
+@* 
+this looks like absolute booty but I think the idea is okay. Needs retooling.
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-6 d-flex">
+            @if(Model != null && Model.Tags.Any())
+            {
+                foreach (var tag in Model.Tags)
+                {
+                    <span class="badge bg-dark me-1">
+                        @tag.Name
+                    </span>
+                }
+            }
+        </div>
+
+    </div>
+</div> *@
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-6">
-            @if (Model != null && Model.Any())
+            @if (Model != null && Model.BlogPosts.Any())
             {
-                foreach (var blogPost in Model)
+                foreach (var blogPost in Model.BlogPosts)
                 {
                     <div class="mb-5 bg-light shadow p-3 bg-white rounded">
                         <img src="@blogPost.FeaturedImageUrl"
@@ -52,7 +72,11 @@
                             @blogPost.ShortDescription
                         </p>
 
-                        <a class="btn btn-dark">Read More</a>
+                        <a class="btn btn-dark"
+                           asp-area=""
+                           asp-controller="Blogs"
+                           asp-action="Index"
+                           asp-route-urlHandle="@blogPost.UrlHandle">Read More</a>
                     </div>
                 }
             }
