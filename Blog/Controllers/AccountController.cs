@@ -50,9 +50,14 @@ namespace Blog.Controllers
         }
 
         [HttpGet]
-        public IActionResult Login()
+        public IActionResult Login(string returnUrl)
         {
-            return View();
+            var model = new LoginViewModel 
+            { 
+                ReturnUrl = returnUrl 
+            };
+
+            return View(model);
         }
 
         [HttpPost]
@@ -62,6 +67,11 @@ namespace Blog.Controllers
 
             if (signInResult.Succeeded)
             {
+                if (!string.IsNullOrWhiteSpace(loginViewModel.ReturnUrl))
+                {
+                    return Redirect(loginViewModel.ReturnUrl);
+                }
+
                 return RedirectToAction("Index", "Home");
             }
 
