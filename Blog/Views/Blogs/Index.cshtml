@@ -1,4 +1,7 @@
-﻿@model Blog.Models.Domain.BlogPost
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> signInManager
+
+@model Blog.Models.ViewModels.BlogDetailsViewModel
 
 @{
     ViewData["Title"] = Model.PageTitle;
@@ -14,6 +17,16 @@
                 <div class="d-flex justify-content-between mb-3">
                     <span class="text-secondary">@Model.Author</span>
                     <span class="text-secondary">@Model.PublishedDate.ToShortDateString()</span>
+                </div>
+
+                <div class="mb-3">
+                    @if (signInManager.IsSignedIn(User))
+                    {
+                        <a>
+                            <i class="bi bi-hand-thumbs-up me-2"></i>
+                        </a>
+                    }
+                    <span>@Model.TotalLikes</span> Likes
                 </div>
 
                 <div class="mb-3 d-flex">
