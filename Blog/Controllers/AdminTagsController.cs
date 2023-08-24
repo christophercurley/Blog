@@ -1,10 +1,12 @@
 ﻿using Blog.Models.Domain;
 using Blog.Models.ViewModels;
 using Blog.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Controllers
 {
+    [Authorize(Roles = "Admin, SuperAdmin")]
     public class AdminTagsController : Controller
     {
         private readonly ITagRepository tagRepository;
@@ -96,7 +98,7 @@ namespace Blog.Controllers
         {
             var deletedTag = await tagRepository.Delete(editTagRequest.Id);
 
-            if (deletedTag != null) 
+            if (deletedTag != null)
             {
                 // Show success notification
                 return RedirectToAction("List");
